@@ -75,3 +75,19 @@ JWT_SECRET=your_jwt_secret_key
 - Home Landing Page
 
 - Dashboard (Not completed yet just APIs are made to appear)
+
+## Week 2 Submission Work
+
+- Created routes for creating Auction and Deleting Auction
+
+- Modified the Sign Up and Log In page to include the user Profile Picture while Signup
+
+- Added a category to filter auctions according to Category
+
+- Categories can only be created by the Admin and cannot be modified by regular users.
+
+- Category section page is not fully working there might be some error in code.
+
+Note - The project uses Multer to upload picture to the local Server files. So the project will work under localhost only.
+
+To work with live server or production, use Cloudinary to upload images on Cloud Based Management System.

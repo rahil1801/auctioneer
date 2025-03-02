@@ -31,13 +31,22 @@ exports.signup = async (req, res) => {
         //hash pass
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        //check for image
+        let imageUrl = `https://api.dicebear.com/8.x/initials/svg?seed=${firstName} ${lastName}`;
+
+        console.log("REQ FILE", req.file);  
+
+        if(req.file){
+            imageUrl = `/uploads/${req.file.filename}`;
+        }
+
         //create entry in DB
         const user = await User.create({
             firstName,
             lastName,
             email,
             password:hashedPassword,
-            image:`https://api.dicebear.com/8.x/initials/svg?seed=${firstName} ${lastName}`,
+            image:imageUrl,
             role,
         });
 

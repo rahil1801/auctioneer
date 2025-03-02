@@ -11,6 +11,8 @@ import Auctions from './pages/Auctions';
 import Contact from './pages/Contact';
 import Dashboard from './pages/Dashboard';
 import MyProfile from './components/core/Dashboard/MyProfile';
+import MyAuctions from './components/core/Dashboard/MyAuctions'
+import CreateAuction from './components/core/Dashboard/CreateAuction';
 
 const App = () => {
     return(
@@ -42,6 +44,8 @@ const App = () => {
                 }> 
                     {/* Outlet routes will come here */}
                     <Route path='dashboard/my-profile' element={<MyProfile />}/>
+                    <Route path='dashboard/my-auctions' element={<MyAuctions />}/>
+                    <Route path='dashboard/create-auction' element={<CreateAuction />}/>
                 </Route>
             </Routes> 
         </div>

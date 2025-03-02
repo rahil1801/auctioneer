@@ -23,8 +23,8 @@ const userSchema = new mongoose.Schema({
     },
     role:{
         type:String,
-        enum:["user", "admin"],
-        default:"user"
+        enum:["User", "Admin"],
+        default:"User"
     },
     bids:[
         {
@@ -43,7 +43,21 @@ const userSchema = new mongoose.Schema({
             type:mongoose.Schema.Types.ObjectId,
             ref:"Product"
         }
-    ]
+    ],
+    winnings:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Product"
+        }
+    ],
+    createdAt:{
+        type:Date,
+        default:Date.now()
+    },
+    updatedAt:{
+        type:Date,
+        default:Date.now()
+    },
 }, {timestamps:true});
 
 module.exports = mongoose.model("User", userSchema);

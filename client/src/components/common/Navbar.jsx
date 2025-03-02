@@ -6,11 +6,14 @@ import { Link, useLocation, matchPath, useNavigate } from "react-router-dom";
 import { CgProfile } from "react-icons/cg";
 import { TbLogout2 } from "react-icons/tb";
 import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
+import { setUser } from "../../slices/profileSlice";
 
 const Navbar = () => {
 
     const location = useLocation();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const matchRoute = (route) => {
         return matchPath({path:route}, location.pathname)
@@ -49,9 +52,10 @@ const Navbar = () => {
             credentials: "include"
         });
 
+        dispatch(setUser(null));
         localStorage.removeItem('user');
         toast.success("Logged Out");
-        navigate('/login');
+        navigate('/');
     }
 
     const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;

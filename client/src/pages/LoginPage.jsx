@@ -3,14 +3,14 @@ import { FiLogIn } from "react-icons/fi";
 import { FaEnvelope } from 'react-icons/fa';
 import { TbLockPassword } from "react-icons/tb";
 import { useForm } from 'react-hook-form';
-
-import { apiConnector } from '../services/apiConnector';
-import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../services/operations/authAPI';
 
 const LoginPage = () => {
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { 
       register,
@@ -19,31 +19,10 @@ const LoginPage = () => {
       formState: { errors, isSubmitSuccessful },
   } = useForm();
 
-  const [loading, setLoading] = useState(false);
+  const {loading} = useSelector((state) => state.profile);
 
   const onSubmit = async (data) => {
-
-      setLoading(true);
-      try{
-          const response = await apiConnector("POST", "http://localhost:4000/api/v1/auth/login", data);
-          console.log("RESPONSE", response);
-
-          if(!response.data.success){
-              throw new Error(response.data.message);
-          }
-
-          toast.success("Login Successful");
-
-          localStorage.setItem('user', JSON.stringify(response.data.user));
-
-          navigate('/dashboard/my-profile');
-          
-      }
-      catch(error){
-          console.log("ERROR IN SIGNUP", error);
-          toast.error("Login Failed");
-      }
-      setLoading(false);
+      dispatch(login(data, navigate));
   }
 
   useEffect(() => {

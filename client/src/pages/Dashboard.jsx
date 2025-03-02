@@ -1,17 +1,33 @@
+import React from "react";
+import { useSelector } from "react-redux";
+import EmptyLoader from "../components/EmptyLoader.jsx";
 import { Outlet } from "react-router-dom";
+import Sidebar from "../components/core/Dashboard/Sidebar.jsx";
 
 const Dashboard = () => {
+
+    const {loading: profileLoading} = useSelector((state) => state.profile);
+
+    if(profileLoading){
+        return(
+            <div>
+                <EmptyLoader />
+            </div>
+        )
+    }
+
     return(
-        <div className="flex w-full h-[500px] text-[2.5rem] items-center">
-            <div className="w-full">
-            <div className="relative flex flex-col xl:flex-row gap-5 w-full h-full p-3 xl:p-14 items-center">
+        <div className="w-full">
+            <div className="relative flex flex-col xl:flex-row gap-5 w-full h-full p-3 items-center">
+                
+                <Sidebar />
+                
                 <div className="w-full shadow-lg xl:flex-1 h-full rounded-2xl overflow-y-auto">
                     <div>
                         <Outlet />
                     </div>
                 </div>
             </div>
-        </div>
         </div>
     )
 };

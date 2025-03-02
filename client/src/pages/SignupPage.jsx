@@ -1,47 +1,87 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FiLogIn } from 'react-icons/fi';
 import { FaEnvelope } from 'react-icons/fa';
 import { TbLockPassword } from 'react-icons/tb';
 import { FaUserPlus } from "react-icons/fa";
+import { FaUser } from 'react-icons/fa';
+import { AiOutlineDelete } from 'react-icons/ai';
 
 import toast from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { apiConnector } from '../services/apiConnector';
+import { useDispatch, useSelector } from 'react-redux';
+import { signup } from '../services/operations/authAPI';
 
 const SignupPage = () => {
 
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
+  const dispatch = useDispatch();
+
+  const [preview, setPreview] = useState(null);
+  const {loading} = useSelector((state) => state.profile);
+
+  //handle input change
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+
+    if(file){
+      setValue("image", file);
+      const reader = new FileReader();
+      reader.onloadend = () => setPreview(reader.result);
+      reader.readAsDataURL(file);
+    }
+  }
+
+  const removeImage = () => {
+    setValue("image", null);
+    setPreview(null);
+    if(fileInputRef.current){
+      fileInputRef.current.value = "";
+    }
+  }
 
   const {
       register,
       handleSubmit,
       reset,
+      setValue,
       formState: { errors, isSubmitSuccessful }
   } = useForm();
 
-  const [loading, setLoading] = useState(false);
-
   const onSubmit = async (data) => {
       //console.log(data);
-      setLoading(true);
+      const role = "user";
 
-      try{
-          const response = await apiConnector("POST", "http://localhost:4000/api/v1/auth/signup", data);
-          console.log("RESPONSE", response);
+      const formData = new FormData();
 
-          if(!response.data.success){
-              throw new Error(response.data.message);
-          }
+      formData.append("firstName", data.firstName);
+      formData.append("lastName", data.lastName);
+      formData.append("email", data.email);
+      formData.append("password", data.password);
+      formData.append("confirmPassword", data.confirmPassword);
+      formData.append("role", role);
 
-          toast.success("Signup Successful");
-          navigate("/login");
+      if(data.image instanceof File){
+          formData.append("image", data.image);
       }
-      catch(error){
-        console.log("ERROR IN SIGNUP", error);
-        toast.error("Something went wrong!!")
+
+      //console.log("FORMDATA", [...formData.entries()]);
+
+      if(formData.password !== formData.confirmPassword){
+          toast.error("Password do not match");
       }
-      setLoading(false);
+
+      else{
+          try{
+            dispatch(signup(formData, navigate));
+        }
+
+        catch(error){
+            console.log("ERROR IN SIGNUP:", error);
+            toast.error("Something went wrong");
+        }
+      }
   }
 
   useEffect(() => {
@@ -52,7 +92,9 @@ const SignupPage = () => {
               email:"",
               password:"",
               confirmPassword:""
-          })
+          });
+
+          setPreview(null);
       }
   }, [isSubmitSuccessful, reset]);
 
@@ -63,11 +105,55 @@ const SignupPage = () => {
                 <FiLogIn />
             </div>
 
-            <h1 className='font-sans font-medium text-2xl mt-5'>Log In with email</h1>
+            <h1 className='font-sans font-medium text-2xl mt-5'>Sign Up with email</h1>
             <p className='mt-2 px-16 text-center font-medium text-gray-600'>Join the new world to discover new auctions and explore new products</p>
 
             {/* Form */}
             <form className='mt-6 flex flex-col gap-3' onSubmit={handleSubmit(onSubmit)}>
+                <div className="w-full flex flex-col items-center">
+                    <div className="w-[180px] h-[180px] relative bg-gray-100 rounded-xl overflow-hidden">
+                        {
+                            preview ? (
+                                <img src={preview} alt="Preview" className="w-full h-full object-cover" />
+                            ) :
+                                <div className="w-full h-full">
+                                    <FaUser className="w-full h-full p-2 text-gray-300"/>
+                                </div>
+                        }
+
+                        {
+                            preview &&
+                            <button
+                                type="button"
+                                onClick={removeImage}
+                                className="absolute bottom-2 right-2 mt-2 p-2 bg-red-500 text-white cursor-pointer text-sm rounded-full"
+                            >
+                                <AiOutlineDelete />
+                            </button>
+                        }
+                    </div>
+                </div>
+
+                {/* Upload Button */}
+                <button
+                    type="button"
+                    onClick={() => fileInputRef.current.click()} // Trigger hidden file input
+                    className="w-fit self-center bg-blue-500 text-white px-4 py-2 rounded cursor-pointer"
+                >
+                    {
+                        preview ? `Edit Profile Picture` : `Upload Profile Picture`
+                    }
+                </button>
+
+                {/* Hidden File Input */}
+                <input
+                    type="file"
+                    accept="image/*"
+                    ref={fileInputRef}
+                    style={{ display: "none" }}
+                    onChange={handleImageChange}
+                />
+
                 <div className="flex items-center rounded-lg px-4 py-3 w-96 gap-3 
                     space-x-3 shadow-md bg-gray-100">
                   <FaUserPlus className="text-gray-500" fontSize={22} />

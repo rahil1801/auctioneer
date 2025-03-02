@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
+const User = require('../models/User');
 
-const authMiddleware = (req, res, next) => {
+exports.authMiddleware = async (req, res, next) => {
     const token = req.cookies.token;
 
     if(!token){
@@ -22,4 +23,20 @@ const authMiddleware = (req, res, next) => {
     }
 }
 
-module.exports = authMiddleware;
+exports.isAdmin = async (req, res, next) => {
+    try{
+        if(req.user.role !== "Admin"){
+            return res.status(401).json({
+                success:false,
+                message:"This is a protected route for Admin only",
+            });
+        }
+        next();
+    }
+    catch(error){
+        return res.status(500).json({
+            success:false,
+            message:"User role cannot be verified, Please try again",
+        });
+    }
+}
