@@ -77,9 +77,7 @@ export function googleLogin(navigate){
         
         try{
             const result = await signInWithPopup(auth, provider);
-            console.log("RESULT", result);
             const user = result.user;
-            console.log("USER", user);
 
             const response = await apiConnector("POST", GOOGLE_LOGIN, {
                 uid: user.uid,
@@ -112,4 +110,5 @@ export function googleLogin(navigate){
         dispatch(setLoading(false));
         toast.dismiss(toastId);
     }
+
 }
