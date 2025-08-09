@@ -303,7 +303,7 @@ const AuctionDetails = () => {
             {(() => {
               if (!auctionData?.bids?.length || !user) return null;
               const highestBid = bidsSortedDesc[0];
-              if (highestBid?.user?._id !== user?.id) {
+              if (highestBid?.bidder?._id !== user?.id) {
                 return (
                   <motion.div
                     className="text-red-500 font-semibold mt-4 flex gap-3 items-center"
@@ -319,7 +319,7 @@ const AuctionDetails = () => {
             })()}
 
             <motion.button
-              className='mt-4 bg-gradient-to-r from-blue-600 to-purple-600 transition-all px-10 py-2 rounded-lg text-white font-medium'
+              className='mt-4 cursor-pointer bg-gradient-to-r from-blue-600 to-purple-600 transition-all px-10 py-2 rounded-lg text-white font-medium'
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => setIsModalOpen(true)}
@@ -435,7 +435,7 @@ const AuctionDetails = () => {
                           ${bid?.amount}
                         </motion.div>
 
-                        {user?.id === bid?.user?._id && (
+                        {user?.id === bid?.bidder?._id && (
                           <div className='flex gap-2 items-center'>
                             <motion.button onClick={() => { setEditingBid(bid); setIsEditModalOpen(true); }} className='p-2 hover:bg-black/5 rounded-full transition-all' whileHover={{ rotate: 8 }}>
                               <FiEdit2 className='text-[#E2FE26] text-xl' />

@@ -2,16 +2,22 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card';
 import { Button } from '../../ui/button';
-import { getUserProfile } from '../../../services/operations/userAPI';
+import { deleteUserAccount, getUserProfile } from '../../../services/operations/userAPI';
 import { formatDate } from "../../../services/formatDate";
 import { FaUser, FaTrophy, FaGavel, FaEye, FaClock, FaDollarSign } from "react-icons/fa";
 import { RiAuctionLine } from "react-icons/ri";
 import { BiTime } from "react-icons/bi";
+import { MdDelete } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const MyProfile = () => {
     const [profileData, setProfileData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState("overview");
+    const [showConfirm, setShowConfirm] = useState(false);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const fetchProfileData = async () => {
@@ -68,6 +74,11 @@ const MyProfile = () => {
         { id: "stats", name: "Statistics", icon: <FaTrophy className="w-4 h-4" /> }
     ];
 
+    //delete logic
+    const handleDelete = async () => {
+        dispatch(deleteUserAccount(navigate));
+    }
+
     return (
         <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -96,7 +107,7 @@ const MyProfile = () => {
                     className="mb-8"
                 >
                     <Card className="shadow-2xl border-0 bg-white/80 backdrop-blur-sm">
-                        <CardContent className="p-8">
+                        <CardContent className="p-8 flex justify-between items-center">
                             <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
 
                                 <div className="relative">
@@ -121,6 +132,42 @@ const MyProfile = () => {
                                             Member since {formatDate(user.createdAt)}
                                         </span>
                                     </div>
+                                </div>
+                            </div>
+                            <div>
+                            <div className="relative inline-block">
+                                {/* Delete button */}
+                                <button
+                                    onClick={() => setShowConfirm((prev) => !prev)}
+                                    className="bg-red-600 cursor-pointer text-white px-4 py-4 rounded-lg hover:bg-red-700 transition"
+                                >
+                                    <MdDelete />
+                                </button>
+
+                                {/* Hover / popover confirmation box */}
+                                {showConfirm && (
+                                    <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-300 shadow-lg rounded-lg p-4 z-50">
+                                    <p className="text-gray-700 text-sm mb-3">
+                                        Are you sure you want to delete your account? This action is{" "}
+                                        <span className="text-red-500 font-semibold">permanent</span>.
+                                    </p>
+                                    <div className="flex justify-between">
+                                        <button
+                                        onClick={() => setShowConfirm(false)}
+                                        className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
+                                        >
+                                        No
+                                        </button>
+                                        <button
+                                        onClick={handleDelete}
+                                        disabled={loading}
+                                        className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50"
+                                        >
+                                        {loading ? "Deleting..." : "Yes"}
+                                        </button>
+                                    </div>
+                                    </div>
+                                )}
                                 </div>
                             </div>
                         </CardContent>

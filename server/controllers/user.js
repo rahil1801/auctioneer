@@ -279,4 +279,25 @@ exports.getUserWinnings = async (req, res) => {
     }
 };
 
+//delete user account
+exports.deleteUserAccount = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    // Delete all bids placed by the user
+    await Bid.deleteMany({ bidder: userId });
+
+    // Optionally delete all products listed by the user
+    await Product.deleteMany({ seller: userId });
+
+    // Delete the user
+    await User.findByIdAndDelete(userId);
+
+    return res.status(200).json({success:true, message: "User account deleted permanently" });
+  } catch (error) {
+    console.error("Error deleting user account:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 

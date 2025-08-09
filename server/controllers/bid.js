@@ -1,8 +1,8 @@
 const Bid = require("../models/Bid.js");
 const Product = require("../models/Product.js");
+const User = require("../models/User.js");
 
-// 1️⃣ Place a bid
-export const placeBid = async (req, res) => {
+exports.placeBid = async (req, res) => {
   try {
     const { productId, bidAmount } = req.body;
 
@@ -15,27 +15,34 @@ export const placeBid = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // Check if bid is higher than current highest bid
     const highestBid = await Bid.findOne({ product: productId }).sort({ amount: -1 });
     if (highestBid && bidAmount <= highestBid.amount) {
       return res.status(400).json({ message: `Your bid must be higher than ${highestBid.amount}` });
     }
 
+    // Create new bid
     const newBid = await Bid.create({
       product: productId,
       bidder: req.user.id,
       amount: bidAmount
     });
 
-    return res.status(201).json({ message: "Bid placed successfully", bid: newBid });
+    // Update product's bids and currentBid
+    product.bids.push(newBid._id);
+    product.currentBid = bidAmount;
+    await product.save();
+
+    // Update user's bids array
+    await User.findByIdAndUpdate(req.user.id, { $push: { bids: newBid._id } });
+
+    return res.status(201).json({ success:true, message: "Bid placed successfully", bid: newBid });
   } catch (error) {
     console.error("Error placing bid:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
 
-// 2️⃣ Edit a bid
-export const editBid = async (req, res) => {
+exports.editBid = async (req, res) => {
   try {
     const { bidId } = req.params;
     const { bidAmount } = req.body;
@@ -60,18 +67,24 @@ export const editBid = async (req, res) => {
       return res.status(400).json({ message: `Your new bid must be higher than ${highestBid.amount}` });
     }
 
+    // Update bid amount
     bid.amount = bidAmount;
     await bid.save();
 
-    return res.status(200).json({ message: "Bid updated successfully", bid });
+    // Update product's currentBid if this is the highest bid
+    const product = await Product.findById(bid.product);
+    const newHighestBid = await Bid.findOne({ product: bid.product }).sort({ amount: -1 });
+    product.currentBid = newHighestBid ? newHighestBid.amount : 0;
+    await product.save();
+
+    return res.status(200).json({success:true, message: "Bid updated successfully", bid });
   } catch (error) {
     console.error("Error editing bid:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
 
-// 3️⃣ Delete a bid
-export const deleteBid = async (req, res) => {
+exports.deleteBid = async (req, res) => {
   try {
     const { bidId } = req.params;
 
@@ -85,12 +98,24 @@ export const deleteBid = async (req, res) => {
       return res.status(403).json({ message: "You can only delete your own bids" });
     }
 
+    // Remove from Product's bids array
+    await Product.findByIdAndUpdate(bid.product, { $pull: { bids: bid._id } });
+
+    // Remove from User's bids array
+    await User.findByIdAndUpdate(bid.bidder, { $pull: { bids: bid._id } });
+
+    // Delete the bid
     await bid.deleteOne();
 
-    return res.status(200).json({ message: "Bid deleted successfully" });
+    // Update product's currentBid after deletion
+    const product = await Product.findById(bid.product);
+    const highestBid = await Bid.findOne({ product: bid.product }).sort({ amount: -1 });
+    product.currentBid = highestBid ? highestBid.amount : 0;
+    await product.save();
+
+    return res.status(200).json({success:true, message: "Bid deleted successfully" });
   } catch (error) {
     console.error("Error deleting bid:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
-

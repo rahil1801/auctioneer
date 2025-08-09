@@ -28,7 +28,8 @@ export const userEndpoints = {
     TOP_SELLERS: BASE_URL + "/user/topSellers",
     GET_USER_PROFILE: BASE_URL + "/user/profile",
     GET_USER_HISTORY: BASE_URL + "/user/history",
-    GET_USER_WINNINGS: BASE_URL + "/user/winnings"
+    GET_USER_WINNINGS: BASE_URL + "/user/winnings",
+    DELETE_USER_ACCOUNT: BASE_URL + "/user/delete-account"
 }
 
 export const bidEndpoints = {

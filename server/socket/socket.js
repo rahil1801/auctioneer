@@ -23,7 +23,7 @@ const setupSocket = (server) => {
             socket.user = decoded;
             next();
         } catch (error) {
-            console.log("ERROR IN SOCKET AUTHENTICATION: ", error);
+            //console.log("ERROR IN SOCKET AUTHENTICATION: ", error);
             return next(new Error("Authentication error"));
         }
     });

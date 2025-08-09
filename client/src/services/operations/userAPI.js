@@ -1,8 +1,9 @@
 import toast from 'react-hot-toast';
 import { userEndpoints } from '../apis';
 import { apiConnector } from '../apiConnector';
+import { setLoading, setUser } from '../../slices/profileSlice';
 
-const { TOP_BUYERS, TOP_SELLERS, GET_USER_PROFILE, GET_USER_HISTORY, GET_USER_WINNINGS } = userEndpoints;
+const { TOP_BUYERS, TOP_SELLERS, GET_USER_PROFILE, GET_USER_HISTORY, GET_USER_WINNINGS, DELETE_USER_ACCOUNT } = userEndpoints;
 
 export const topBuyers = async () => {
     //const toastId = toast.loading("Loading...");
@@ -109,4 +110,30 @@ export const getUserWinnings = async () => {
         toast.error("Cannot fetch user winnings");
     }
     return result;
+}
+
+export function deleteUserAccount(navigate){
+    return async(dispatch) => {
+        const toastId = toast.loading("Loading...");
+        dispatch(setLoading(true));
+        
+        try{
+            const response = await apiConnector("DELETE", DELETE_USER_ACCOUNT);
+    
+            if(!response.data.success){
+                throw new Error(response.data.message);
+            }
+    
+            dispatch(setUser(null));
+            localStorage.removeItem('user');
+            toast.success("Account Removed");
+            navigate("/");
+        }
+        catch(error){
+            console.log("Error Deleting User", error);
+            toast.error("Something went wrong");
+        }
+        dispatch(setLoading(false));
+        toast.dismiss(toastId);
+    }
 }

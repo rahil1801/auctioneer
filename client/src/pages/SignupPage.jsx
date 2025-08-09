@@ -58,7 +58,6 @@ const SignupPage = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-      console.log("Form submitted with data:", data);
       setIsLoading(true);
       
       try {
@@ -89,7 +88,7 @@ const SignupPage = () => {
               formData.append("image", data.image);
           }
 
-          console.log("FormData entries:", [...formData.entries()]);
+          // console.log("FormData entries:", [...formData.entries()]);
           await dispatch(signup(formData, navigate));
       } catch(error) {
           console.log("ERROR IN SIGNUP:", error);
