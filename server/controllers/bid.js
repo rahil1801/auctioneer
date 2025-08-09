@@ -4,9 +4,9 @@ const Product = require("../models/Product.js");
 // 1️⃣ Place a bid
 export const placeBid = async (req, res) => {
   try {
-    const { productId, amount } = req.body;
+    const { productId, bidAmount } = req.body;
 
-    if (!productId || !amount) {
+    if (!productId || !bidAmount) {
       return res.status(400).json({ message: "Product ID and amount are required" });
     }
 
@@ -17,14 +17,14 @@ export const placeBid = async (req, res) => {
 
     // Check if bid is higher than current highest bid
     const highestBid = await Bid.findOne({ product: productId }).sort({ amount: -1 });
-    if (highestBid && amount <= highestBid.amount) {
+    if (highestBid && bidAmount <= highestBid.amount) {
       return res.status(400).json({ message: `Your bid must be higher than ${highestBid.amount}` });
     }
 
     const newBid = await Bid.create({
       product: productId,
       bidder: req.user.id,
-      amount
+      amount: bidAmount
     });
 
     return res.status(201).json({ message: "Bid placed successfully", bid: newBid });
@@ -38,9 +38,9 @@ export const placeBid = async (req, res) => {
 export const editBid = async (req, res) => {
   try {
     const { bidId } = req.params;
-    const { amount } = req.body;
+    const { bidAmount } = req.body;
 
-    if (!amount) {
+    if (!bidAmount) {
       return res.status(400).json({ message: "Bid amount is required" });
     }
 
@@ -56,11 +56,11 @@ export const editBid = async (req, res) => {
 
     // Check if new amount is higher than current highest bid
     const highestBid = await Bid.findOne({ product: bid.product }).sort({ amount: -1 });
-    if (highestBid && amount <= highestBid.amount && highestBid._id.toString() !== bidId) {
+    if (highestBid && bidAmount <= highestBid.amount && highestBid._id.toString() !== bidId) {
       return res.status(400).json({ message: `Your new bid must be higher than ${highestBid.amount}` });
     }
 
-    bid.amount = amount;
+    bid.amount = bidAmount;
     await bid.save();
 
     return res.status(200).json({ message: "Bid updated successfully", bid });
@@ -93,3 +93,4 @@ export const deleteBid = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
