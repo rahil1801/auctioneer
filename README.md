@@ -5,7 +5,7 @@ Users can create auctions, place bids, track live bid updates, and manage their 
 
 ---
 
-## 🌐 Live Demo
+## 🌐 Live Project
 https://auctioneer-client.vercel.app/
 
 ---
@@ -80,6 +80,8 @@ The system includes:
 git clone https://github.com/rahil1801/auctioneer.git
 cd client && npm install && npm run dev
 cd server && npm install && npm run start
+
+Make sure to use your own api-keys. Look into .env.example file to know about the APIs used in this project
 ```
 ---
 
