@@ -21,7 +21,7 @@ const Navbar = () => {
     const dispatch = useDispatch();
 
     const handleLogout = async () => {
-        await fetch("http://localhost:4000/api/v1/auth/logout", {
+        await fetch("https://auctioneer-server.vercel.app/api/v1/auth/logout", {
             method:"POST",
             credentials: "include"
         });
@@ -106,5 +106,6 @@ const Navbar = () => {
         </motion.nav>
     )
 };
+
 
 export default Navbar;
