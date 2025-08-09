@@ -44,6 +44,14 @@ app.use('/api/v1/auction', auctionRoutes);
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/bid', bidRoutes);
 
+//default route
+app.get('/', (req, res) => {
+   return res.json({
+    success:true,
+    message:"Your server is up and running..."
+   });
+});
+
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
