@@ -73,25 +73,6 @@ The system includes:
 <img width="1909" height="919" alt="A2" src="https://github.com/user-attachments/assets/6a8d0c5e-ce7d-4228-9909-b5dd8a359a4f" />
 ---
 
-## 📂 Project Structure
-auctioneer/
-│
-├── server/ # Express server, MongoDB models, Socket.io
-│ ├── controllers/ # Auction, Bid, Auth controllers
-│ ├── models/ # MongoDB schemas
-│ ├── routes/ # API endpoints
-│ └── index.js
-│
-├── client/ # React frontend
-│ ├── src/ # Components, Redux slices, pages
-│ ├── public/
-│ └── package.json
-│
-└── README.md
-│
-└── Vercel.json
----
-
 ## ⚙️ Installation & Running Locally
 
 ### 1️⃣ Clone the repository
@@ -99,6 +80,7 @@ auctioneer/
 git clone https://github.com/rahil1801/auctioneer.git
 cd client && npm install && npm run dev
 cd server && npm install && npm run start
+```
 ---
 
 ## 📖 Contributing
