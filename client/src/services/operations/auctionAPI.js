@@ -178,7 +178,7 @@ export const fetchNotifications = async () => {
     let result = [];
     try{
         const response = await apiConnector("GET", GET_NOTIFICATIONS);
-        console.log("NOTIFICATIONS API RESPONSE", response);
+        //console.log("NOTIFICATIONS API RESPONSE", response);
 
         if(!response?.data?.success){
             throw new Error(response.data.message);
@@ -257,4 +257,5 @@ export const editAuction = async (auctionId, formData) => {
         console.log("ERROR IN EDITING AUCTION", error);
     }
     return result;
+
 };
