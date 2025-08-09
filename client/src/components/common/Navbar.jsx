@@ -81,7 +81,7 @@ const Navbar = () => {
                     {
                         user &&
                             <div className="flex gap-8 items-center">
-                                <div className="text-white">
+                                <div className="text-black">
                                     <Notification />
                                 </div>
                                 <button onClick={handleLogout}
@@ -92,7 +92,7 @@ const Navbar = () => {
                                     user &&
                                     <button
                                         onClick={() => navigate('/dashboard/my-profile')}
-                                        className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 transition-all duration-300"
+                                        className="flex cursor-pointer items-center gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 transition-all duration-300"
                                         title="Dashboard"
                                     >
                                         <RxDashboard className="w-5 h-5" />
@@ -109,3 +109,4 @@ const Navbar = () => {
 
 
 export default Navbar;
+
