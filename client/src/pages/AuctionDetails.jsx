@@ -210,19 +210,19 @@ const AuctionDetails = () => {
   };
 
   const bidsSortedDesc = (auctionData?.bids || []).slice().sort((a, b) => (b.bidAmount || 0) - (a.bidAmount || 0));
-
+  
   return (
-    <div className='w-full lg:w-[95%] mx-auto mt-10 flex flex-col lg:flex-row gap-8 pt-24'>
+    <div className='w-full xl:w-[95%] mx-auto mt-10 flex flex-col xl:flex-row gap-8 pt-24'>
 
       <motion.div
-        className='w-full lg:w-[70%] p-3'
+        className='w-full xl:w-[70%] p-3'
         initial="hidden"
         animate="visible"
         variants={fadeInUp}
       >
         <motion.div className='w-full flex flex-col lg:flex-row gap-8'>
           <motion.div
-            className='w-full lg:w-[50%] rounded-3xl overflow-hidden shadow-2xl bg-black/40'
+            className='w-full xl:w-[50%] rounded-3xl overflow-hidden shadow-2xl bg-black/40'
             whileHover={{ scale: 1.02 }}
           >
             <img
@@ -233,7 +233,7 @@ const AuctionDetails = () => {
             />
           </motion.div>
 
-          <div className='w-full lg:w-[50%] px-5'>
+          <div className='w-full xl:w-[50%] px-5'>
             <motion.h1
               className='text-blue-600 text-3xl font-semibold'
             >
@@ -329,13 +329,13 @@ const AuctionDetails = () => {
           </div>
         </motion.div>
 
-        <motion.div className='w-[50%] flex flex-col gap-3 mt-[40px]' variants={fadeInUp}>
+        <motion.div className='w-full px-4 xl:px-0 lg:w-[50%] flex flex-col gap-3 mt-[40px]' variants={fadeInUp}>
           <p className='text-sm text-gray-500 font-medium'>Description</p>
           <p className='text-[15px] text-black'>{auctionData?.description}</p>
         </motion.div>
       </motion.div>
 
-      <motion.div className='w-[30%] flex flex-col gap-6 h-auto p-5 py-8' initial="hidden" animate="visible" variants={fadeInUp}>
+      <motion.div className='w-full xl:w-[30%] flex flex-col gap-6 h-auto p-5 py-8' initial="hidden" animate="visible" variants={fadeInUp}>
 
         <motion.div className='w-full flex items-center rounded-lg bg-[#F6F6F6] px-5 py-6 shadow-md' whileHover={{ scale: 1.02 }} transition={{ type: "spring", stiffness: 200 }}>
           <div className='w-[50%] flex flex-col gap-2'>

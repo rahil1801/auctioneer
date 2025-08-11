@@ -178,7 +178,7 @@ export const fetchNotifications = async () => {
     let result = [];
     try{
         const response = await apiConnector("GET", GET_NOTIFICATIONS);
-        console.log("NOTIFICATIONS API RESPONSE", response);
+        //console.log("NOTIFICATIONS API RESPONSE", response);
 
         if(!response?.data?.success){
             throw new Error(response.data.message);
@@ -197,7 +197,7 @@ export const readNotifications = async () => {
     try{
         const response = await apiConnector("PATCH", MARK_READ_NOTIFICATIONS);
 
-        console.log("READ NOTIFICATIONS API RESPONSE", response);
+        //console.log("READ NOTIFICATIONS API RESPONSE", response);
 
         if(!response?.data?.success){
             throw new Error(response.data.message);
@@ -215,7 +215,7 @@ export const clearNotifications = async () => {
     try{
         const response = await apiConnector("DELETE", CLEAR_NOTIFICATIONS);
 
-        console.log("CLEAR NOTIFICATIONS API RESPONSE", response);
+        //console.log("CLEAR NOTIFICATIONS API RESPONSE", response);
 
         if(!response?.data?.success){
             throw new Error(response.data.message);

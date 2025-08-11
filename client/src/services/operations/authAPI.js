@@ -49,7 +49,7 @@ export function signup(formData, navigate){
         try{
             const response = await apiConnector("POST", SIGNUP_API, formData);
             
-            console.log("RESPONSE OF SIGNUP", response);
+            //console.log("RESPONSE OF SIGNUP", response);
 
             if(!response.data.success){
                 throw new Error(response.data.message);

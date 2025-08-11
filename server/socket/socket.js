@@ -8,6 +8,7 @@ const setupSocket = (server) => {
             origin: process.env.FRONTEND_URL,
             credentials: true,
         },
+        transports:["polling"]
     });
 
     const connectedUsers = {};

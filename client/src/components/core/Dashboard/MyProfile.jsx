@@ -107,7 +107,7 @@ const MyProfile = () => {
                     className="mb-8"
                 >
                     <Card className="shadow-2xl border-0 bg-white/80 backdrop-blur-sm">
-                        <CardContent className="p-8 flex justify-between items-center">
+                        <CardContent className="p-8 flex flex-col md:flex-row justify-between items-center">
                             <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
 
                                 <div className="relative">
@@ -134,8 +134,8 @@ const MyProfile = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div>
-                            <div className="relative inline-block">
+                            <div className="mt-4 md:mt-0">
+                                <div className="relative inline-block">
                                 {/* Delete button */}
                                 <button
                                     onClick={() => setShowConfirm((prev) => !prev)}
@@ -146,7 +146,7 @@ const MyProfile = () => {
 
                                 {/* Hover / popover confirmation box */}
                                 {showConfirm && (
-                                    <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-300 shadow-lg rounded-lg p-4 z-50">
+                                    <div className="absolute -left-25 md:-left-36 right-0 mt-2 w-64 bg-white border border-gray-300 shadow-lg rounded-lg p-4 z-50">
                                     <p className="text-gray-700 text-sm mb-3">
                                         Are you sure you want to delete your account? This action is{" "}
                                         <span className="text-red-500 font-semibold">permanent</span>.

@@ -54,7 +54,7 @@ const Sidebar = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="w-80 h-screen bg-white/80 backdrop-blur-xl shadow-2xl rounded-3xl p-6 border border-white/20"
+            className="w-full md:w-80 md:mx-auto h-full bg-white/80 backdrop-blur-xl shadow-2xl rounded-3xl p-6 border border-white/20"
         >
             <motion.div 
                 initial={{ opacity: 0, y: -20 }}
