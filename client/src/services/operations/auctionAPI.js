@@ -257,4 +257,5 @@ export const editAuction = async (auctionId, formData) => {
         console.log("ERROR IN EDITING AUCTION", error);
     }
     return result;
+
 };
